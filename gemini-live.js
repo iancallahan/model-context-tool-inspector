@@ -267,7 +267,10 @@ async function startLive(
   const config = getConfig();
   const liveGenAI = new GoogleGenAI({
     apiKey: localStorage.apiKey,
-    httpOptions: { apiVersion: 'v1alpha' },
+    httpOptions: {
+      apiVersion: 'v1alpha',
+      ...(localStorage.baseUrl && { baseUrl: localStorage.baseUrl }),
+    },
   });
 
   if (liveSession) {

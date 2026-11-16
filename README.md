@@ -49,6 +49,20 @@ Install the extension directly via the [Chrome Web Store](https://chromewebstore
         * *Note:* The input must be valid JSON (e.g., `{"text": "hello world"}`).
     * Click **Execute Tool**.
 
+## Configuration
+
+When installing from source, you can create a `.env.json` file next to `manifest.json` to preconfigure the extension:
+
+```json
+{
+  "apiKey": "your-gemini-api-key",
+  "model": "gemini-3.6-flash",
+  "baseUrl": "https://your-proxy.example.com/gemini"
+}
+```
+
+`baseUrl` is optional. Set it to route Gemini API requests through a proxy or API gateway instead of `generativelanguage.googleapis.com`. Omit the API version (for example `/v1beta`) because the Gemini SDK appends it. Voice input uses the Gemini Live API over a WebSocket at `<baseUrl>/ws/...`, so it works only if your proxy also forwards WebSocket connections.
+
 ## Disclaimer
 
 This is not an officially supported Google product. This project is not

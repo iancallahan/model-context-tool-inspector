@@ -160,6 +160,7 @@ async function initGenAI() {
     env = (await import('./.env.json', { with: { type: 'json' } })).default;
   } catch {}
   if (env?.apiKey) localStorage.apiKey ??= env.apiKey;
+  if (env?.baseUrl) localStorage.baseUrl ??= env.baseUrl;
   if (localStorage.model === 'gemini-2.5-flash') {
     localStorage.model = 'gemini-3-flash-preview';
   }
@@ -167,7 +168,12 @@ async function initGenAI() {
     localStorage.model = 'gemini-3.1-flash-lite';
   }
   localStorage.model ??= env?.model || 'gemini-3.6-flash';
-  genAI = localStorage.apiKey ? new GoogleGenAI({ apiKey: localStorage.apiKey }) : undefined;
+  genAI = localStorage.apiKey
+    ? new GoogleGenAI({
+        apiKey: localStorage.apiKey,
+        ...(localStorage.baseUrl && { httpOptions: { baseUrl: localStorage.baseUrl } }),
+      })
+    : undefined;
   promptBtn.disabled = !localStorage.apiKey;
   resetBtn.disabled = !localStorage.apiKey;
   apiKeyBtn.textContent = localStorage.apiKey ? 'Update Gemini API key' : 'Set Gemini API key';
